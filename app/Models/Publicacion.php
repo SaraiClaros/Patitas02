@@ -20,4 +20,22 @@ class Publicacion extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function comentarios()
+    
+    {
+    return $this->hasMany(Comentario::class);
+    }
+
+    public function reacciones()
+    {
+        return $this->hasMany(Reaccion::class);
+    }
+
+    public function reaccionesLove()
+    {
+        return $this->reacciones()->where('tipo', 'love');
+    }
+
+
 }

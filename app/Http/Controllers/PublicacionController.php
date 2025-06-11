@@ -11,8 +11,8 @@ class PublicacionController extends Controller
     public function index()
     {
         
-        $publicaciones = Auth::user()->publicaciones()->latest()->get();
-        return view('publicaciones.index', compact('publicaciones'));
+      $publicaciones = Publicacion::with('user')->latest()->get();
+      return view('publicaciones.index', compact('publicaciones'));
     }
 
     public function create()
