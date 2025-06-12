@@ -1,100 +1,133 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>@yield('title', 'Mi App')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+                /* Ajusta el contenido principal para no quedar debajo de la sidebar fija */
+        .main-content {
+            margin-left: 220px; /* igual que el ancho del sidebar */
+            padding: 20px; /* opcional */
+        }
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+        .sidebar {
+            position: fixed; /* Agrega esto para fijar la barra */
+            top: 0;
+            left: 0;
+            height: 100vh; /* Que ocupe toda la altura visible */
+            width: 220px;
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto; /* Por si la barra tiene mucho contenido, que permita scroll interno */
+            z-index: 1000; /* Para que esté arriba de otros elementos */
+        }
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+        .sidebar a {
+            color: white;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+    <div class="sidebar">
+        <h4 class="text-center">Menú</h4>
+        <a href="{{ route('publicaciones.index') }}">🏠 Home</a>
+        <a href="{{ route('publicaciones.index') }}">🔔 Notificaciones</a>
+        <a href="{{ route('publicaciones.index') }}">💬 Chats</a>
+        <a href="{{ route('publicaciones.create') }}">🔍 Buscar</a>
+        <a href="{{ route('publicaciones.index') }}">🌍 Explorar</a>
+        @auth
+        @if (Auth::user()->tipo_usuario === 'refugio')
+            <a href="{{ route('publicaciones.index') }}">🐶 Publicar mascota en adopción</a>
+        @endif
+        @endauth
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+        <a href="{{ route('publicaciones.index') }}">📁 Expedientes</a>
+        <a href="{{ route('profile.edit') }}">👤 Perfil</a> {{-- Nuevo enlace agregado --}}
+        {{-- Cierre de sesión --}}
+    <form method="POST" action="{{ route('logout') }}" style="margin-top: 20px; padding: 0 20px;">
+        @csrf
+        <button type="submit" style="background: none; border: none; color: white; text-align: left; padding: 10px 0; width: 100%;">
+            🚪 Cerrar sesión
+        </button>
+    </form>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
+    @auth
+    <div class="user-menu" style="position: absolute; top: 10px; right: 10px; z-index: 9999;">
+        <div style="position: relative;">
+            <button id="dropdownToggle" onclick="toggleDropdown()" 
+                style="background:none; border:none; cursor:pointer; color:black; font-weight:bold; 
+                font-size: 1.2rem; 
+                text-align: center; 
+                padding-top: 8px;  
+                width: 150px; 
+                display: block;">
+                {{ Auth::user()->name }}
+            </button>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            <div id="dropdown" style="display:none; position:absolute; top:100%; right:0; background:white; border:1px solid #ccc; padding:0.5rem; box-shadow:0 4px 8px rgba(0,0,0,0.1); min-width:150px; z-index:9999;">
+                <a href="{{ route('profile.edit') }}" style="color:black; text-decoration:none; padding:0.3rem; display: block;">
+                    Actualizar Perfil
+                </a>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                     @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
+                    <button type="submit" style="background:none; border:none; padding:0.3rem; cursor:pointer; color:black; width: 100%; text-align: left;">
+                        Cerrar sesión
+                    </button>
                 </form>
             </div>
         </div>
     </div>
-</nav>
+    @endauth
+
+    @isset($header)
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            {{ $header }}
+        </div>
+    </header>
+    @endisset
+
+    <div class="content">
+        @yield('content')
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('dropdown');
+            const toggle = document.getElementById('dropdownToggle');
+            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>
+

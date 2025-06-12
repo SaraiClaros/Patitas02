@@ -1,3 +1,10 @@
+@extends('layouts.navigation')
+
+@section('title', 'Publicaciones')
+
+@section('content')
+
+
 <style>
  
   .container {
@@ -109,6 +116,7 @@
 <div class="container">
     @foreach ($publicaciones as $publicacion)
         <div class="card">
+         <p class="text-base text-muted">Publicado por: <strong class="text-xl font-bold">{{ $publicacion->user->name }}</strong></p>
             @if ($publicacion->imagen)
                 <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Imagen de la publicación">
             @endif
@@ -116,7 +124,7 @@
             <div class="card-body">
                 <h3 class="card-title">{{ $publicacion->titulo }}</h3>
                 <p class="card-text">{{ $publicacion->descripcion }}</p>
-                <p class="text-muted">Publicado por: <strong>{{ $publicacion->user->name }}</strong></p>
+                
 
                 <form action="{{ route('reacciones.love', $publicacion) }}" method="POST" style="display:inline;">
                     @csrf
@@ -146,3 +154,4 @@
         </div>
     @endforeach
 </div>
+@endsection
