@@ -121,7 +121,7 @@
       </div>
 
       <div class="form-group">
-          <label for="media">Archivo multimedia (imagen o video)</label>
+          <label for="media">Archivo multimedia </label>
           <input type="file" name="media" id="media" accept="image/*,video/mp4,video/webm">
       </div>
 
