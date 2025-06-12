@@ -11,23 +11,23 @@
             margin: 0;
         }
 
-                /* Ajusta el contenido principal para no quedar debajo de la sidebar fija */
+                
         .main-content {
-            margin-left: 220px; /* igual que el ancho del sidebar */
-            padding: 20px; /* opcional */
+            margin-left: 220px; 
+            padding: 20px; 
         }
 
         .sidebar {
-            position: fixed; /* Agrega esto para fijar la barra */
+            position: fixed; 
             top: 0;
             left: 0;
-            height: 100vh; /* Que ocupe toda la altura visible */
+            height: 100vh; 
             width: 220px;
-            background-color: #343a40;
+            background-color:rgb(12, 12, 12);
             color: white;
             padding: 20px 0;
-            overflow-y: auto; /* Por si la barra tiene mucho contenido, que permita scroll interno */
-            z-index: 1000; /* Para que esté arriba de otros elementos */
+            overflow-y: auto; 
+            z-index: 1000; 
         }
 
         .sidebar a {
@@ -51,8 +51,8 @@
     <div class="sidebar">
         <h4 class="text-center">Menú</h4>
         <a href="{{ route('publicaciones.index') }}">🏠 Home</a>
-        <a href="{{ route('publicaciones.index') }}">🔔 Notificaciones</a>
-        <a href="{{ route('publicaciones.index') }}">💬 Chats</a>
+        <a href="{{ route('publicaciones.create') }}">📸 Crear Publicación</a>
+        <a href="{{ route('publicaciones.index') }}">🐾 Ver Mascotas en adopción</a>
         <a href="{{ route('publicaciones.create') }}">🔍 Buscar</a>
         <a href="{{ route('publicaciones.index') }}">🌍 Explorar</a>
         @auth

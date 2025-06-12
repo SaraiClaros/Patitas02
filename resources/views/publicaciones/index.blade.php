@@ -4,9 +4,7 @@
 
 @section('content')
 
-
 <style>
- 
   .container {
     max-width: 500px;
     margin: 40px auto;
@@ -26,7 +24,7 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   }
 
-  .card img {
+  .card img, .card video {
     width: 100%;
     max-height: 350px;
     object-fit: cover;
@@ -35,7 +33,6 @@
 
   .card-body {
     padding: 15px 20px;
-
   }
 
   .card-title {
@@ -77,7 +74,6 @@
     color: white;
   }
 
-  
   .comentario {
     background-color: #f9f9f9;
     border-radius: 6px;
@@ -111,26 +107,37 @@
   }
 </style>
 
-<h2 style="text-align: center; margin-bottom: 40px;">Publicaciones que pueden ser de tu interes</h2>
+<h2 style="text-align: center; margin-bottom: 40px;">Publicaciones que pueden ser de tu interés</h2>
 
 <div class="container">
     @foreach ($publicaciones as $publicacion)
         <div class="card">
-         <p class="text-base text-muted">Publicado por: <strong class="text-xl font-bold">{{ $publicacion->user->name }}</strong></p>
-            @if ($publicacion->imagen)
-                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Imagen de la publicación">
+            <p class="text-muted">
+                Publicado por: <strong>{{ $publicacion->user->name }}</strong> | 
+                Publicado el: {{ $publicacion->created_at->format('d/m/Y H:i') }}
+            </p>
+
+            {{-- Mostrar imagen o video --}}
+            @if ($publicacion->media)
+                @php
+                    $ext = strtolower(pathinfo($publicacion->media, PATHINFO_EXTENSION));
+                @endphp
+
+                @if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif']))
+                    <img src="{{ asset('storage/' . $publicacion->media) }}" alt="media" />
+                @elseif (in_array($ext, ['mp4', 'webm']))
+                    <video controls>
+                        <source src="{{ asset('storage/' . $publicacion->media) }}" type="video/{{ $ext }}">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                @endif
             @endif
 
             <div class="card-body">
-               Publicado el: {{ $publicacion->created_at->format('d/m/Y H:i') }}
-                </p>
                 <h3 class="card-title">{{ $publicacion->titulo }}</h3>
                 <p class="card-text">{{ $publicacion->descripcion }}</p>
-                <p class="text-sm text-gray-600">
-               
 
-                
-
+                {{-- Botón love --}}
                 <form action="{{ route('reacciones.love', $publicacion) }}" method="POST" style="display:inline;">
                     @csrf
                     <button type="submit" class="btn-love {{ $publicacion->reaccionesLove->contains('user_id', auth()->id()) ? 'loved' : '' }}">
@@ -140,8 +147,7 @@
 
                 <hr>
 
-                <h4 style="text-align:left;">Comentarios:</h4>
-
+                <h4>Comentarios:</h4>
                 @foreach ($publicacion->comentarios as $comentario)
                     <div class="comentario">
                         <strong>{{ $comentario->user->name }}</strong>: {{ $comentario->contenido }}
@@ -159,4 +165,5 @@
         </div>
     @endforeach
 </div>
+
 @endsection

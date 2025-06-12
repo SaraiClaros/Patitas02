@@ -1,39 +1,135 @@
+@extends('layouts.navigation')
 
-<div class="container mt-4">
-    <h2>Crear nueva publicación</h2>
+@section('title', 'Publicaciones')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>¡Ups!</strong> Hubo algunos problemas con tus datos.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+@section('content')
 
-    <form action="{{ route('publicaciones.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+<style>
+  .form-wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
 
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título</label>
-            <input type="text" name="titulo" class="form-control" id="titulo" value="{{ old('titulo') }}" required>
-        </div>
+  .form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
 
-        <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <textarea name="descripcion" class="form-control" id="descripcion" rows="4">{{ old('descripcion') }}</textarea>
-        </div>
+  .form-group {
+    margin-bottom: 20px;
+  }
 
-            <!-- Imagen -->
-        <div class="mb-3">
-            <label for="imagen" class="form-label">Imagen</label>
-            <input type="file" name="imagen" class="form-control" id="imagen" accept="image/*">
-        </div>
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #555;
+  }
 
-        <button type="submit" class="btn btn-primary">Publicar</button>
-        <a href="{{ route('publicaciones.index') }}" class="btn btn-secondary">Cancelar</a>
-    </form>
+  .form-group input[type="text"],
+  .form-group textarea,
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.1);
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #565e64;
+  }
+</style>
+
+<div class="form-wrapper">
+  <h2>Crear nueva publicación</h2>
+
+  @if ($errors->any())
+      <div class="alert alert-danger">
+          <strong>¡Ups!</strong> Hubo algunos problemas con tus datos:
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+  @endif
+
+  <form action="{{ route('publicaciones.store') }}" method="POST" enctype="multipart/form-data">
+      @csrf
+
+      <div class="form-group">
+          <label for="titulo">Título</label>
+          <input type="text" name="titulo" id="titulo" value="{{ old('titulo') }}" required>
+      </div>
+
+      <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea name="descripcion" id="descripcion" rows="4">{{ old('descripcion') }}</textarea>
+      </div>
+
+      <div class="form-group">
+          <label for="media">Archivo multimedia (imagen o video)</label>
+          <input type="file" name="media" id="media" accept="image/*,video/mp4,video/webm">
+      </div>
+
+      <div class="btn-wrapper">
+          <button type="submit" class="btn-primary">📤 Publicar</button>
+          <a href="{{ route('publicaciones.index') }}" class="btn-secondary">❌ Cancelar</a>
+      </div>
+  </form>
 </div>
 
+@endsection

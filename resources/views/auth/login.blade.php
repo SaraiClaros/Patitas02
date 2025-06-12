@@ -67,7 +67,7 @@
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-                    <h4 class="text-2xl font-bold mb-6 text-center">PATITAS A LA OBRA</h4>
+                    <h4 class="text-2xl font-bold mb-6 text-center"> 🐾 PATITAS A LA OBRA 🐾</h4>
 
 
                     <!-- Correo -->

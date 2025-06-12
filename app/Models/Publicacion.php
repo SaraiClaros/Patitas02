@@ -12,7 +12,7 @@ class Publicacion extends Model
     protected $fillable = [
         'titulo',
         'descripcion',
-        'imagen',
+        'media',
         'user_id',
     ];
 
