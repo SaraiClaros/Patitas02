@@ -122,8 +122,13 @@
             @endif
 
             <div class="card-body">
+               Publicado el: {{ $publicacion->created_at->format('d/m/Y H:i') }}
+                </p>
                 <h3 class="card-title">{{ $publicacion->titulo }}</h3>
                 <p class="card-text">{{ $publicacion->descripcion }}</p>
+                <p class="text-sm text-gray-600">
+               
+
                 
 
                 <form action="{{ route('reacciones.love', $publicacion) }}" method="POST" style="display:inline;">
