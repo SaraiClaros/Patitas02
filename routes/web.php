@@ -16,9 +16,7 @@ Route::get('/publicaciones.index', function () {
     return view('publicaciones.index');
 })->middleware(['auth', 'verified'])->name('publicaciones.index');
 
-Route::get('/barrap', function () {
-    return view('barrap');
-})->middleware(['auth', 'verified'])->name('barrap');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

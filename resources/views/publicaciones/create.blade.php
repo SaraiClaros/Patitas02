@@ -94,7 +94,7 @@
 </style>
 
 <div class="form-wrapper">
-  <h2>Crear nueva publicación</h2>
+  <h2>Planeta Mascota</h2>
 
   @if ($errors->any())
       <div class="alert alert-danger">
