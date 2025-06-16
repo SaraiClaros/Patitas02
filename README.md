@@ -1,61 +1,66 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Para correr 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+php artisan serve
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+REPORTE DE POSIBLES ERRORES AL DESCARGAR EL PROYECTO DEL GITHUP
+1. Error: Falta la carpeta vendor
+Mensaje de error:
+require(...\vendor\autoload.php): Failed to open stream: No such file or directory
+Explicación:
+Laravel necesita las dependencias del proyecto para funcionar. Estas están dentro de la carpeta vendor/, que se genera al instalar con Composer.
+Solución:
+Ejecuta en la raíz del proyecto:
+composer install
+2. Error 500 - Server Error
+Mensaje de error:
+500 Server Error
+Explicación:
+Este es un error genérico. En Laravel, suele deberse a problemas en la configuración del archivo. env o a la falta de clave de cifrado.
+Soluciones posibles:
+1.	Asegúrate de tener un archivo. env. Si no, crea uno con:
+copy .env.example .env
+2.	Genera la clave de la aplicación:
+php artisan key:generate
+3.	Verifica que la configuración de base de datos en .env esté correcta.
+3. Error: No application encryption key has been specified
+Mensaje de error:
+No application encryption key has been specified.
+Explicación:
+Laravel requiere una clave única para cifrar información sensible.
+Solución:
+Ejecuta:
+php artisan key:generate
+Esto generará una clave y la agregará automáticamente a tu .env.
+4. Error: Base de datos SQLite no encontrada
+Mensaje de error:
+Database file at path [...]database.sqlite does not exist.
+Explicación:
+Laravel intenta conectarse a una base de datos SQLite, pero el archivo físico no existe.
+Soluciones:
+Opción 1: Crear el archivo SQLite
+1.	Ve a la carpeta:
+Donde tienes el proyecto descargado 
+2.	Crea un archivo vacío llamado database.sqlite.
+3.	En el archivo. env, asegúrate de tener:
+DB_CONNECTION=sqlite
+Y agrega el archive sqlite 
+5. Error: Vite manifest not found
+Mensaje de error:
+Vite manifest not found at: ...\public\build/manifest.json
+Explicación:
+Laravel usa Vite para compilar los archivos frontend (JS/CSS). Este error aparece cuando no se ha generado el build de Vite.
+Solución:
+1.	Instala las dependencias de Node:
+npm install
+2.	Genera el build:
+npm run build
+Esto creará la carpeta public/build y el archivo manifest.json.
+Alternativa para desarrollo:
+npm run dev
+Y en .env:
+VITE_DEV_SERVER=true
+ Recomendaciones finales
+•	Verifica siempre que .env esté completo y actualizado.
+•	Revisa los logs de Laravel si sigue fallando:
+storage/logs/laravel.log
+•	Haz composer install y npm install al descargar un proyecto Laravel.
