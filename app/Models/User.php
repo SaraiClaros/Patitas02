@@ -63,6 +63,13 @@ class User extends Authenticatable
     return $this->hasMany(Reaccion::class);
     }
 
+    public function duenos()
+    {
+        return $this->hasMany(Dueno::class);
+    }
+    
+    
+
 
 
 }
