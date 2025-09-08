@@ -46,7 +46,7 @@ class HistorialMedicoController extends Controller
     public function edit(HistorialMedico $historial)
     {
         $mascotas = Mascota::all();
-        return view('historial.create', compact('historial', 'mascotas')); // Reutilizamos la vista create
+        return view('historial.create', compact('historial', 'mascotas')); 
     }
 
     // Actualizar historial

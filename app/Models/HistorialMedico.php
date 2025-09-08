@@ -10,7 +10,7 @@ class HistorialMedico extends Model
     use HasFactory;
 
     protected $table = 'historial_medico'; 
-    protected $primaryKey = 'ID_historial'; 
+    protected $primaryKey = 'ID_Hmedico'; 
     public $timestamps = false;
 
     protected $fillable = [

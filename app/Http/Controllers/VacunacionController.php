@@ -15,10 +15,10 @@ class VacunacionController extends Controller
         return view('vacunaciones.index', compact('vacunaciones'));
     }
 
-    // Formulario para crear una vacunación
+    // Mostrar formulario para crear una vacunación
     public function create()
     {
-        $mascotas = Mascota::all(); // Todas las mascotas disponibles
+        $mascotas = Mascota::all();
         return view('vacunaciones.create', compact('mascotas'));
     }
 
@@ -45,14 +45,14 @@ class VacunacionController extends Controller
     }
 
     // Mostrar formulario de edición
-    public function edit(Vacunacion $vacunacion)
+    public function edit(Vacunacion $vacunacione)
     {
         $mascotas = Mascota::all();
-        return view('vacunaciones.create', compact('vacunacion', 'mascotas')); // reutilizamos create
+        return view('vacunaciones.create', compact('vacunacione', 'mascotas'));
     }
 
-    // Actualizar vacunación
-    public function update(Request $request, Vacunacion $vacunacion)
+    // Actualizar vacunación existente
+    public function update(Request $request, Vacunacion $vacunacione)
     {
         $request->validate([
             'ID_mascota' => 'required|exists:mascotas,ID_mascota',
@@ -62,7 +62,7 @@ class VacunacionController extends Controller
             'observaciones' => 'nullable|string|max:500',
         ]);
 
-        $vacunacion->update([
+        $vacunacione->update([
             'ID_mascota' => $request->ID_mascota,
             'nombre_vacuna' => $request->nombre_vacuna,
             'fecha_aplicacion' => $request->fecha_aplicacion,
@@ -74,9 +74,9 @@ class VacunacionController extends Controller
     }
 
     // Eliminar vacunación
-    public function destroy(Vacunacion $vacunacion)
+    public function destroy(Vacunacion $vacunacione)
     {
-        $vacunacion->delete();
+        $vacunacione->delete();
         return redirect()->route('vacunaciones.index')->with('success', 'Vacunación eliminada correctamente');
     }
 }

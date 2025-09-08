@@ -26,9 +26,9 @@
                 <td>{{ $h->veterinario }}</td>
             </tr>
             <td>
-                <a href="{{ route('historial.edit', $h->ID_historial) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                <a href="{{ route('historial.edit', $h->ID_Hmedico) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
 
-                <form action="{{ route('historial.destroy', $h->ID_historial) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
+                <form action="{{ route('historial.destroy', $h->ID_Hmedico) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
                     @csrf
                     @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
