@@ -15,13 +15,15 @@ class TratamientoController extends Controller
         return view('tratamientos.index', compact('tratamientos'));
     }
 
-    // Formulario para crear tratamiento
-    public function create()
-    {
-        $mascotas = Mascota::all(); // Para el select de mascotas
-        $tratamientos = Tratamiento::with('mascota')->latest()->get(); // Para mostrar en la misma vista si quieres
-        return view('tratamientos.create', compact('mascotas', 'tratamientos'));
-    }
+  public function create()
+{
+    $mascotas = Mascota::all(); // Para el select
+    $tratamientos = Tratamiento::with('mascota')->latest()->get(); // opcional si quieres listar en la misma vista
+
+    return view('tratamientos.create', compact('mascotas', 'tratamientos'));
+}
+
+
 
     // Guardar tratamiento
     public function store(Request $request)

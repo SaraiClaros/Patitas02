@@ -17,6 +17,7 @@
                 <th>Motivo</th>
                 <th>Diagnóstico</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,14 @@
                 <td>{{ $c->diagnostico }}</td>
                 <td>{{ $c->estado }}</td>
             </tr>
+            <td>
+                <a href="{{ route('consultas.edit', $c->ID_consulta) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+
+                <form action="{{ route('consultas.destroy', $c->ID_consulta) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar esta consulta?');">
+                    @csrf
+                    @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
+                        </form>
             @endforeach
         </tbody>
     </table>

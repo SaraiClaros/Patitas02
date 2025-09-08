@@ -14,6 +14,7 @@
                 <th>Fecha</th>
                 <th>Descripción</th>
                 <th>Veterinario</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,14 @@
                 <td>{{ $h->descripcion }}</td>
                 <td>{{ $h->veterinario }}</td>
             </tr>
+            <td>
+                <a href="{{ route('historial.edit', $h->ID_historial) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+
+                <form action="{{ route('historial.destroy', $h->ID_historial) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
+                    @csrf
+                    @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
+                        </form>
             @endforeach
         </tbody>
     </table>

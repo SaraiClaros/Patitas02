@@ -80,6 +80,8 @@
                 <li><a class="dropdown-item" href="{{ route('historial.index') }}">Historial Médico</a></li>
                 <li><a class="dropdown-item" href="{{ route('vacunaciones.index') }}">Vacunaciones</a></li>
                 <li><a class="dropdown-item" href="{{ route('tratamientos.index') }}">Tratamientos</a></li>
+                <li><a class="dropdown-item" href="{{ route('tratamientos.index') }}">Descargar Reporte</a></li>
+                <li><a class="dropdown-item" href="{{ route('tratamientos.index') }}">Enviar Reporte</a></li>
             </ul>
         </div>
      @endif

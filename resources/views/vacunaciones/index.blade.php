@@ -15,6 +15,7 @@
                 <th>Fecha Aplicación</th>
                 <th>Próxima Dosis</th>
                 <th>Observaciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,13 @@
                 <td>{{ $v->proxima_dosis }}</td>
                 <td>{{ $v->observaciones }}</td>
             </tr>
+            <a href="{{ route('vacunaciones.edit', $v->ID_vacunacion) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+
+                <form action="{{ route('vacunaciones.destroy', $v->ID_vacunacion) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar esta vacunación?');">
+                    @csrf
+                    @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
+                        </form>
             @endforeach
         </tbody>
     </table>

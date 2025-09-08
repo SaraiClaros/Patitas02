@@ -15,6 +15,7 @@
                 <th>Inicio</th>
                 <th>Fin</th>
                 <th>Observaciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,14 @@
                 <td>{{ $t->fecha_fin ?? '—' }}</td>
                 <td>{{ $t->observaciones }}</td>
             </tr>
+            <td>
+                <a href="{{ route('tratamientos.edit', $t->ID_tratamiento) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+
+                <form action="{{ route('tratamientos.destroy', $t->ID_tratamiento) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este tratamiento?');">
+                    @csrf
+                    @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
+                        </form>
             @empty
             <tr>
                 <td colspan="5" class="text-center">No hay tratamientos registrados</td>
