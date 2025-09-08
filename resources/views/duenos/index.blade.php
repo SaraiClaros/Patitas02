@@ -35,9 +35,8 @@
                     <td>{{ $dueno->dui }}</td>
                     <td>
                        
-                        <a href="{{ route('duenos.create') }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                        <a href="{{ route('duenos.edit', $dueno->ID_dueno) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
 
-                       
                         <form action="{{ route('duenos.destroy', $dueno->ID_dueno) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar este dueño?');">
                             @csrf
                             @method('DELETE')

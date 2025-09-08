@@ -1,16 +1,19 @@
 @extends('layouts.navigation')
 
-@section('title', 'consultas')
+@section('title', 'Consultas')
 
 @section('content')
 <div class="container">
-    <h1>Consultas</h1>
+    <h1 class="mb-4">Consultas</h1>
+
     <a href="{{ route('consultas.create') }}" class="btn btn-primary mb-3">➕ Nueva Consulta</a>
 
-    @if(session('success')) <div class="alert alert-success">{{ session('success') }}</div> @endif
+    @if(session('success')) 
+        <div class="alert alert-success">{{ session('success') }}</div> 
+    @endif
 
     <table class="table table-bordered">
-        <thead>
+        <thead class="table-light">
             <tr>
                 <th>Mascota</th>
                 <th>Fecha</th>
@@ -22,21 +25,26 @@
         </thead>
         <tbody>
             @foreach($consultas as $c)
-            <tr>
-                <td>{{ $c->mascota->nombre_m }}</td>
-                <td>{{ $c->fecha_cita }}</td>
-                <td>{{ $c->motivo }}</td>
-                <td>{{ $c->diagnostico }}</td>
-                <td>{{ $c->estado }}</td>
-            </tr>
-            <td>
-                <a href="{{ route('consultas.edit', $c->ID_consulta) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
+                <tr>
+                    <td>{{ $c->mascota->nombre_m }}</td>
+                    <td>{{ $c->fecha_cita }}</td>
+                    <td>{{ $c->motivo }}</td>
+                    <td>{{ $c->diagnostico }}</td>
+                    <td>{{ $c->estado }}</td>
+                    <td class="d-flex gap-1">
+                        <!-- Botón Editar -->
+                        <a href="{{ route('consultas.edit', $c->ID_consultas) }}" class="btn btn-sm btn-warning">✏️ Editar</a>
 
-                <form action="{{ route('consultas.destroy', $c->ID_consulta) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('¿Estás seguro de eliminar esta consulta?');">
-                    @csrf
-                    @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">🗑️ Eliminar</button>
+                        <!-- Botón Eliminar -->
+                        <form action="{{ route('consultas.destroy', $c->ID_consultas) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta consulta?')">
+                                🗑️ Eliminar
+                            </button>
                         </form>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>

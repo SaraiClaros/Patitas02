@@ -11,33 +11,32 @@ class MascotaController extends Controller
     // Mostrar listado de mascotas
     public function index()
     {
-        // Mostrar todas las mascotas sin necesidad de login
         $mascotas = Mascota::all();
-
         return view('mascotas.index', compact('mascotas'));
     }
 
-    // Formulario para registrar nueva mascota
+    // Formulario para crear nueva mascota
     public function create()
     {
-        $mascotas = null;
-        $duenos = \App\Models\Dueno::all();
-        return view('mascotas.create', compact('duenos'));
+        $mascota = null; // no hay mascota para crear
+        $duenos = Dueno::all();
+        return view('mascotas.create', compact('mascota', 'duenos'));
     }
 
     // Guardar mascota en BD
     public function store(Request $request)
     {
         $request->validate([
-            'nombre_m' => 'required|string|max:255',
-            'especie'  => 'required|string|max:50',
-            'raza'     => 'required|string|max:50',
-            'sexo'     => 'required|string|max:10',
-            'edad'     => 'required|integer|min:0',
+            'ID_dueno'  => 'nullable|exists:duenos,ID_dueno',
+            'nombre_m'  => 'required|string|max:255',
+            'especie'   => 'required|string|max:50',
+            'raza'      => 'required|string|max:50',
+            'sexo'      => 'required|string|max:10',
+            'edad'      => 'required|integer|min:0',
         ]);
 
         Mascota::create([
-            'ID_dueno'   => $request->ID_dueno ?? null, // opcional, si quieres relacionarla
+            'ID_dueno'   => $request->ID_dueno,
             'n_registro' => uniqid(),
             'nombre_m'   => $request->nombre_m,
             'especie'    => $request->especie,
@@ -49,24 +48,27 @@ class MascotaController extends Controller
         return redirect()->route('mascotas.index')->with('success', 'Mascota registrada correctamente');
     }
 
-    // Mostrar formulario de edición
-    public function edit(Mascota $mascotas)
+    // Formulario para editar mascota
+    public function edit(Mascota $mascota)
     {
-        return view('mascotas.create', compact('mascota')); // reutilizamos la vista create
+        $duenos = Dueno::all();
+        return view('mascotas.create', compact('mascota', 'duenos')); // reutilizamos la vista create
     }
 
     // Actualizar datos de mascota
-    public function update(Request $request, Mascota $mascotas)
+    public function update(Request $request, Mascota $mascota)
     {
         $request->validate([
-            'nombre_m' => 'required|string|max:255',
-            'especie'  => 'required|string|max:50',
-            'raza'     => 'required|string|max:50',
-            'sexo'     => 'required|string|max:10',
-            'edad'     => 'required|integer|min:0',
+            'ID_dueno'  => 'nullable|exists:duenos,ID_dueno',
+            'nombre_m'  => 'required|string|max:255',
+            'especie'   => 'required|string|max:50',
+            'raza'      => 'required|string|max:50',
+            'sexo'      => 'required|string|max:10',
+            'edad'      => 'required|integer|min:0',
         ]);
 
-        $mascotas->update([
+        $mascota->update([
+            'ID_dueno' => $request->ID_dueno,
             'nombre_m' => $request->nombre_m,
             'especie'  => $request->especie,
             'raza'     => $request->raza,
@@ -78,9 +80,9 @@ class MascotaController extends Controller
     }
 
     // Eliminar mascota
-    public function destroy(Mascota $mascotas)
+    public function destroy(Mascota $mascota)
     {
-        $mascotas->delete();
+        $mascota->delete();
         return redirect()->route('mascotas.index')->with('success', 'Mascota eliminada correctamente');
     }
 }
