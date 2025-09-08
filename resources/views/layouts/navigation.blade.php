@@ -56,7 +56,10 @@
     <a href="{{ route('publicaciones.index') }}">🏠 Home</a> 
     <a href="{{ route('publicaciones.create') }}">📸 Crear Publicación</a>
     <a href="{{ route('consultas.create') }}">🔍 Buscar</a>
-    <a href="{{ route('publicaciones.index') }}">🌍 Explorar</a>
+    <a href="{{ route('solicitudes.create') }}">🌍 Explorar</a>
+    <a href="{{ route('campanas.publicacion') }}">Ver campañas</a>
+    
+
 
     @auth
         @if (Auth::user()->tipo_usuario === 'refugio')
@@ -67,6 +70,10 @@
 
     @auth
         @if (Auth::user()->tipo_usuario === 'veterinaria')
+
+        <a href="{{ route('campanas.create') }}">Publicar C.E.</a>
+        <a href="{{ route('solicitudes.index') }}">Recibir solicitudes C.E.</a>
+
 
         <div class="dropdown" data-bs-display="static">
             <a class="btn btn-secondary dropdown-toggle w-100" href="#" role="button"

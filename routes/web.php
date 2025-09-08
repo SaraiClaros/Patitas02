@@ -12,6 +12,8 @@ use App\Http\Controllers\VacunacionController;
 use App\Http\Controllers\TratamientoController;
 use App\Http\Controllers\MascotaController;
 use App\Http\Controllers\HistorialMedicoController;
+use App\Http\Controllers\CampanaEsterilizacionController;
+use App\Http\Controllers\SolicitudCEController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -45,12 +47,21 @@ Route::middleware('auth')->group(function () {
 Route::post('/publicaciones/{publicacion}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
 Route::post('/publicaciones/{publicacion}/reaccion/love', [ReaccionController::class, 'toggleLove'])->middleware('auth')->name('reacciones.love');
 
-
+Route::middleware('auth')->group(function () {
 Route::resource('consultas', ConsultaController::class);
 Route::resource('vacunaciones', VacunacionController::class);
 Route::resource('tratamientos', TratamientoController::class);
 Route::resource('mascotas', MascotaController::class);
 Route::resource('historial', HistorialMedicoController::class);
 Route::resource('duenos', DuenoController::class);
+Route::resource('solicitudes', SolicitudCEController::class);
+// Primero la ruta personalizada
+Route::get('/campanas/publicacion', [CampanaEsterilizacionController::class, 'publicacion'])
+    ->name('campanas.publicacion');
+
+// Luego la resource
+Route::resource('campanas', CampanaEsterilizacionController::class);
+
+});
 
 require __DIR__.'/auth.php';
