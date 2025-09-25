@@ -67,9 +67,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(Dueno::class);
     }
-    
-    
 
+    public function compartidos() {
+    return $this->hasMany(Compartido::class);
+    }
 
+    
+  // Usuario que sigo
+    public function siguiendo()
+    {
+        return $this->belongsToMany(User::class, 'seguidores', 'user_id', 'seguido_id');
+    }
+
+// Usuarios que me siguen
+    public function seguidores()
+    {
+        return $this->belongsToMany(User::class, 'seguidores', 'seguido_id', 'user_id');
+    }
 
 }
+
+
+
+

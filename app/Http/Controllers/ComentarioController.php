@@ -11,15 +11,23 @@ class ComentarioController extends Controller
     public function store(Request $request, Publicacion $publicacion)
 {
     $request->validate([
-        'contenido' => 'required|string',
+        'contenido' => 'required|string|max:500',
     ]);
 
-    $publicacion->comentarios()->create([
-        'contenido' => $request->contenido,
+    $comentario = $publicacion->comentarios()->create([
         'user_id' => auth()->id(),
+        'contenido' => $request->contenido,
     ]);
 
-    return back()->with('success', 'Comentario publicado');
+    if ($request->ajax()) {
+        return response()->json([
+            'id' => $comentario->id,
+            'user_name' => $comentario->user->name,
+            'contenido' => $comentario->contenido,
+        ]);
+    }
+
+    return redirect()->back();
 }
 
 }
