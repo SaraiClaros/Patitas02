@@ -3,36 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Publicacion;
+use App\Models\Reaccion;
+use Illuminate\Support\Facades\Auth;
 
-class SeguirController extends Controller
+class ReaccionController extends Controller
 {
-    /**
-     * Alternar seguir / dejar de seguir a un usuario
-     */
-    public function toggle(User $user)
+    public function toggleLove(Publicacion $publicacion)
     {
-        $authUser = auth()->user();
+        $user = auth()->user();
 
-        // Verificar si ya sigue al usuario
-        $estaSiguiendo = $authUser->siguiendo()->where('seguido_id', $user->id)->exists();
+        // Verificar si el usuario ya reaccionó con 'love'
+        $reaccion = $publicacion->reacciones()->where('user_id', $user->id)->where('tipo', 'love')->first();
 
-        if ($estaSiguiendo) {
-            // Dejar de seguir
-            $authUser->siguiendo()->detach($user->id);
-            $siguiendo = false;
+        if ($reaccion) {
+            // Si ya dio like, eliminarlo
+            $reaccion->delete();
+            $liked = false;
         } else {
-            // Seguir
-            $authUser->siguiendo()->attach($user->id);
-            $siguiendo = true;
+            // Si no ha dado like, crearlo
+            $publicacion->reacciones()->create([
+                'user_id' => $user->id,
+                'tipo' => 'love',
+            ]);
+            $liked = true;
         }
 
-        // Contar seguidores actualizados del usuario seguido
-        $count = $user->seguidores()->count();
+        // Contar todos los likes
+        $count = $publicacion->reacciones()->where('tipo','love')->count();
 
-        // Devolver JSON igual que tu AJAX
         return response()->json([
-            'siguiendo' => $siguiendo,
+            'liked' => $liked,
             'count' => $count,
         ]);
     }

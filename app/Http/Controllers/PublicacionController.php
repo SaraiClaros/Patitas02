@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Publicacion;
 use App\Models\User;
 use App\Models\Compartido;
+use App\Models\Reaccion;
 use Illuminate\Support\Facades\Auth;
 
 class PublicacionController extends Controller
@@ -17,7 +18,7 @@ class PublicacionController extends Controller
             'user',
             'comentarios.user',
             'reacciones' => fn($q) => $q->where('tipo', 'love'),
-            'compartidos.user' // carga los usuarios que compartieron cada publicación
+            'compartidos.user'
         ])
         ->latest()
         ->paginate(6);
@@ -77,6 +78,38 @@ class PublicacionController extends Controller
         return back()->with('success', 'Publicación compartida.');
     }
 
+    // Like (love)
+    public function love(Publicacion $publicacion)
+    {
+        $user = auth()->user();
+
+        $yaDioLike = $publicacion->reacciones()
+            ->where('user_id', $user->id)
+            ->where('tipo', 'love')
+            ->exists();
+
+        if ($yaDioLike) {
+            // quitar like
+            $publicacion->reacciones()
+                ->where('user_id', $user->id)
+                ->where('tipo', 'love')
+                ->delete();
+            $liked = false;
+        } else {
+            // dar like
+            $publicacion->reacciones()->create([
+                'user_id' => $user->id,
+                'tipo' => 'love'
+            ]);
+            $liked = true;
+        }
+
+        return response()->json([
+            'liked' => $liked,
+            'count' => $publicacion->reacciones()->where('tipo', 'love')->count()
+        ]);
+    }
+
     // Evitar acceso a show individual
     public function show($id)
     {
@@ -118,35 +151,32 @@ class PublicacionController extends Controller
 
     // Perfil de usuario
     public function perfil(User $user)
-{
-    // Publicaciones propias
-    $publicacionesPropias = Publicacion::with([
-        'user',
-        'comentarios.user',
-        'reacciones' => fn($q) => $q->where('tipo','love'),
-        'compartidos.user'
-    ])->where('user_id', $user->id);
+    {
+        // Publicaciones propias
+        $publicacionesPropias = Publicacion::with([
+            'user',
+            'comentarios.user',
+            'reacciones' => fn($q) => $q->where('tipo','love'),
+            'compartidos.user'
+        ])->where('user_id', $user->id);
 
-    // Publicaciones compartidas
-    $publicacionesCompartidas = Publicacion::with([
-        'user', // autor original
-        'comentarios.user',
-        'reacciones' => fn($q) => $q->where('tipo','love'),
-        'compartidos.user'
-    ])->whereHas('compartidos', fn($q) => $q->where('user_id', $user->id))
-      ->get() // necesitamos traer los resultados
-      ->map(function($pub){
-          $pub->compartidoPor = $pub->compartidos->where('user_id', auth()->id())->first()->user ?? null;
-          return $pub;
-      });
+        // Publicaciones compartidas
+        $publicacionesCompartidas = Publicacion::with([
+            'user',
+            'comentarios.user',
+            'reacciones' => fn($q) => $q->where('tipo','love'),
+            'compartidos.user'
+        ])->whereHas('compartidos', fn($q) => $q->where('user_id', $user->id))
+          ->get()
+          ->map(function($pub){
+              $pub->compartidoPor = $pub->compartidos->where('user_id', auth()->id())->first()->user ?? null;
+              return $pub;
+          });
 
-    // Combinar ambas colecciones
-    $publicaciones = $publicacionesPropias->get()->merge($publicacionesCompartidas)
-                            ->sortByDesc(fn($p) => $p->created_at); // ordenar por fecha más reciente
+        // Combinar ambas colecciones
+        $publicaciones = $publicacionesPropias->get()->merge($publicacionesCompartidas)
+                                ->sortByDesc(fn($p) => $p->created_at);
 
-    return view('publicaciones.index', compact('publicaciones', 'user'));
-}
-
-
-
+        return view('publicaciones.index', compact('publicaciones', 'user'));
+    }
 }
