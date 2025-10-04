@@ -85,6 +85,17 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'seguidores', 'seguido_id', 'user_id');
     }
 
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'user_id');
+    }
+
+    // Mensajes que este usuario recibió
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
 }
 
 

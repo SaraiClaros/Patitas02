@@ -187,6 +187,7 @@
             margin-right: 8px;
         }
     </style>
+     @livewireStyles
 </head>
 <body>
 
@@ -212,7 +213,7 @@
         <a href="{{ route('solicitudes.create') }}" class="{{ request()->routeIs('solicitudes.create') ? 'active' : '' }}">
             <img src="{{ asset('imagenes/notificaciones.png') }}" alt="Notificaciones"> Notificaciones
         </a>
-        <a href="{{ route('solicitudes.create') }}" class="{{ request()->routeIs('solicitudes.create') ? 'active' : '' }}">
+        <a href="{{ route('mensajes.usuarios') }}" class="{{ request()->routeIs('mensajes.usuarios') ? 'active' : '' }}">
             <img src="{{ asset('imagenes/comentario.png') }}" alt="Mensajes"> Mensajes
         </a>
         <a href="{{ route('campanas.publicacion') }}" class="{{ request()->routeIs('campanas.publicacion') ? 'active' : '' }}">
@@ -301,7 +302,11 @@
 
     <!-- Contenido principal -->
     <div class="content">
-        @yield('content')
+        @hasSection('content')
+            @yield('content')
+        @else
+            {{ $slot }}
+        @endif
     </div>
 
     <!-- Scripts -->
@@ -340,6 +345,6 @@
             }
         });
     </script>
-
+@livewireScripts
 </body>
 </html>

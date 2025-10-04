@@ -17,7 +17,11 @@ use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\MensajesController;
+use App\Livewire\Chat;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+
 
 // Redirigir raíz a login
 Route::get('/', function () {
@@ -93,6 +97,13 @@ Route::get('/adopta', [MascotaAdopcionController::class, 'index'])->name('adopta
 Route::get('/busqueda', [BusquedaController::class, 'index'])->name('busqueda');
 Route::get('/perfil/{user}', [PublicacionController::class, 'perfil'])->name('perfil.show');
 
+
+Route::get('/mensajes', [MensajesController::class, 'index'])
+    ->name('mensajes.usuarios')
+    ->middleware('auth');
+
+// Chat con usuario específico usando Livewire
+Route::get('/chat/{receiverId}', Chat::class)->middleware('auth')->name('chat');
 
 // Requerido por Laravel auth
 require __DIR__.'/auth.php';
